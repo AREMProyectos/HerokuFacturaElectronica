@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @SpringBootApplication
 public class Main {
-     public static final String LINK_API_GATEWAY_DEPLOY = "https://nebqnnjewe.execute-api.us-west-2.amazonaws.com/prod/bill?id=";
+     public static final String LINK_API_GATEWAY_DEPLOY = "https://qo6ki1xwbc.execute-api.us-west-2.amazonaws.com/prod/bill?id=";
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(Main.class, args);
@@ -27,7 +27,7 @@ public class Main {
     @RequestMapping(value="/bill")
     public ResponseEntity<?> getJsonBill(@RequestParam("id") int id) throws MalformedURLException{
         
-        /*URL link = new URL(LINK_API_GATEWAY_DEPLOY + id);
+        URL link = new URL(LINK_API_GATEWAY_DEPLOY + id);
             String ans = "";
             try (BufferedReader reader
                     = new BufferedReader(new InputStreamReader(link.openStream()))) {
@@ -37,9 +37,9 @@ public class Main {
                 }
             } catch (IOException x) {
                 System.err.println(x);
-            }*/
+            }
         
-        return new ResponseEntity<>(/*ans*/"{id:"+id+"}",HttpStatus.OK);
+        return new ResponseEntity<>(ans,HttpStatus.OK);
     }
 
   
