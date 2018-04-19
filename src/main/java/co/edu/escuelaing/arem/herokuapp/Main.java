@@ -27,7 +27,7 @@ public class Main {
     @RequestMapping(value="/bill")
     public ResponseEntity<?> getJsonBill(@RequestParam("id") int id) throws MalformedURLException{
         
-        URL link = new URL(LINK_API_GATEWAY_DEPLOY + id);
+        /*URL link = new URL(LINK_API_GATEWAY_DEPLOY + id);
             String ans = "";
             try (BufferedReader reader
                     = new BufferedReader(new InputStreamReader(link.openStream()))) {
@@ -37,9 +37,9 @@ public class Main {
                 }
             } catch (IOException x) {
                 System.err.println(x);
-            }
+            }*/
         
-        return new ResponseEntity<>(ans,HttpStatus.OK);
+        return new ResponseEntity<>(/*ans*/"{id:"+id+"}",HttpStatus.OK);
     }
 
   
