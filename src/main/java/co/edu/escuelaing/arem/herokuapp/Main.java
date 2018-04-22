@@ -13,35 +13,65 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @SpringBootApplication
 public class Main {
-     public static final String LINK_API_GATEWAY_DEPLOY = "https://qo6ki1xwbc.execute-api.us-west-2.amazonaws.com/prod/bill?id=";
+
+    public static final String LINK_API_GATEWAY_DEPLOY = "https://qo6ki1xwbc.execute-api.us-west-2.amazonaws.com/prod/bill?";
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(Main.class, args);
     }
 
-    @RequestMapping(value="/bill")
-    public ResponseEntity<?> getJsonBill(@RequestParam("id") int id) throws MalformedURLException{
+    @RequestMapping(value = "/bill", method=GET)
+    public ResponseEntity<?> getJsonBill(
+            @RequestParam("id") int id,
+            @RequestParam("date") String date,
+            @RequestParam("nameEmployee") String nameEmployee,
+            @RequestParam("idEmployee") int idEmployee,
+            @RequestParam("companysNit") int companysNit,
+            @RequestParam("companysPhone") int companysPhone,
+            @RequestParam("consumerName") String consumerName,
+            @RequestParam("consumerId") int consumerId,
+            @RequestParam("consumerPhone") int consumerPhone,
+            @RequestParam("consumerEmail") String consumerEmail,
+            @RequestParam("purchasePrice") float purchasePrice,
+            @RequestParam("ivaPercentage") int ivaPercentage,
+            @RequestParam("ivaPrice") float ivaPrice,
+            @RequestParam("total") float total) throws MalformedURLException {
         
-        URL link = new URL(LINK_API_GATEWAY_DEPLOY + id);
-            String ans = "";
-            try (BufferedReader reader
-                    = new BufferedReader(new InputStreamReader(link.openStream()))) {
-                String inputLine = null;
-                while ((inputLine = reader.readLine()) != null) {
-                    ans += inputLine;
-                }
-            } catch (IOException x) {
-                System.err.println(x);
-            }
-        
-        return new ResponseEntity<>(ans,HttpStatus.OK);
-    }
+        String dateAWS = date.replace("/", "%2f").replace(" ", "%20").replace(":", "%3a");
 
-  
+        String link = "id=" + id
+                + "&date=" + dateAWS
+                + "&nameEmployee=" + nameEmployee
+                + "&idEmployee=" + idEmployee
+                + "&companysNit=" + companysNit
+                + "&companysPhone=" + companysPhone
+                + "&consumerName=" + consumerName
+                + "&consumerId=" + consumerId
+                + "&consumerPhone=" + consumerPhone
+                + "&consumerEmail=" + consumerEmail
+                + "&purchasePrice=" + purchasePrice
+                + "&ivaPercentage=" + ivaPercentage
+                + "&ivaPrice=" + ivaPrice
+                + "&total=" + total;
+        URL urlLink = new URL(LINK_API_GATEWAY_DEPLOY + link.replace("/", "%2f").replace(" ", "%20").replace(":", "%3a"));
+        String ans = "";
+        try (BufferedReader reader
+                = new BufferedReader(new InputStreamReader(urlLink.openStream()))) {
+            String inputLine = null;
+            while ((inputLine = reader.readLine()) != null) {
+                ans += inputLine;
+            }
+        } catch (IOException x) {
+            System.err.println(x);
+        }
+
+        return new ResponseEntity<>(ans, HttpStatus.OK);
+    }
 
 }
